@@ -1,0 +1,15 @@
+FROM python:3.9.5-slim-buster AS base
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir requests
+
+FROM base AS builder
+LABEL author="Piotr Paslawski"
+COPY server.py /
+
+FROM base
+COPY --from=builder /server.py /
+ENV PYTHONUNBUFFERED=1
+HEALTHCHECK CMD curl --fail http://localhost:8000/ || exit 1
+CMD ["python", "/server.py"]
