@@ -1,0 +1,48 @@
+name: Build and test very nice server app
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository of server app
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU emulator
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx tool
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push arm64/v8 image container
+        id: build-arm64
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/arm64/v8
+          push: true
+          tags: piotrpaslawski/lab-docker-zad1:arm64-latest
+
+      - name: Build and push amd64 image container
+        id: build-amd64
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: piotrpaslawski/lab-docker-zad1e:amd64-latest
+
+      - name: Test arm64/v8 image and hope it works
+        run: |
+          docker run --rm piotrpaslawski/lab-docker-zad1:arm64-latest
+
+      - name: Test amd64 image and hope it works
+        run: |
+          docker run --rm piotrpaslawski/lab-docker-zad1:amd64-latest
