@@ -27,7 +27,7 @@ jobs:
           file: DockerFile
           platforms: linux/arm64/v8
           push: true
-          tags: piotrpaslawski/lab-docker-zad1:arm64-latest
+          tags: piotrpaslawski99/lab-docker-zad1:arm64-latest
 
       - name: Build and push amd64 image container
         id: build-amd64
@@ -37,12 +37,12 @@ jobs:
           file: DockerFile
           platforms: linux/amd64
           push: true
-          tags: piotrpaslawski/lab-docker-zad1e:amd64-latest
+          tags: piotrpaslawski99/lab-docker-zad1e:amd64-latest
 
       - name: Test arm64/v8 image and hope it works
         run: |
-          docker run --rm piotrpaslawski/lab-docker-zad1:arm64-latest
+          docker run --rm piotrpaslawski99/lab-docker-zad1:arm64-latest
 
       - name: Test amd64 image and hope it works
         run: |
-          docker run --rm piotrpaslawski/lab-docker-zad1:amd64-latest
+          docker run --rm piotrpaslawski99/lab-docker-zad1:amd64-latest
